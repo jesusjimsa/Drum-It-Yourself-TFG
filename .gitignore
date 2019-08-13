@@ -513,4 +513,7 @@ dmypy.json
 # Ignore all local history of files
 .history
 
+##################################
+bin/
+
 # End of https://www.gitignore.io/api/c,text,latex,linux,macos,python,visualstudiocode
