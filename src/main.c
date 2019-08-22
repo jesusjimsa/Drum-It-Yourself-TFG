@@ -14,6 +14,9 @@
 
 #define BITS 8
 
+#define true (1 == 1)
+#define false (!true)
+
 void *play(void *var){
 	mpg123_handle *mh;
 	unsigned char *buffer;
@@ -56,6 +59,7 @@ void *play(void *var){
 
 	/* clean up */
 	free(buffer);
+	// free(sound);
 	ao_close(dev);
 	mpg123_close(mh);
 	mpg123_delete(mh);
@@ -70,7 +74,8 @@ int main(int argc, char *argv[]){
 	char option;
 	pthread_t tid[10];
 	int i = 0;
-	char *instrument = malloc(30);
+	int allowed = true;
+	char *instrument = malloc(50);
 
 	/* 
 		When reading a character from the keyboard, the
@@ -78,7 +83,7 @@ int main(int argc, char *argv[]){
 		It will change to drums hits in the final product.
 	 */
 	do{
-		scanf("%c", &option);
+		scanf(" %c", &option);	// scanf needs an extra space at the beginning to consume the new line character
 
 		if(i == 10){
 			i = 0;
@@ -109,17 +114,24 @@ int main(int argc, char *argv[]){
 				instrument = "sounds/snare_drum.mp3";
 				// play("sounds/snare_drum.mp3");
 				break;
+			case '*':
+				printf("Bye bye!\n");
+				break;
 			default:
+				printf("Not allowed!\n");
+				allowed = false;
 				break;
 		}
 
-		if(option != '*'){
+		if(option != '*' && allowed){
 			pthread_create(&tid[i], NULL, play, (void *)instrument);
 			i++;
 		}
+
+		allowed = true;
 	} while (option != '*');
 
-	printf("Bye bye!\n");
+	free(instrument);
 	
 	pthread_exit(NULL);
 }
