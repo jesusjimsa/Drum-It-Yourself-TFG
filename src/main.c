@@ -114,6 +114,15 @@ int main(int argc, char *argv[]){
 				instrument = "sounds/snare_drum.mp3";
 				// play("sounds/snare_drum.mp3");
 				break;
+			case 'g':
+				instrument = "sounds/floor_tom.mp3";
+				break;
+			case 'h':
+				instrument = "sounds/mid_tom.mp3";
+				break;
+			case 'i':
+				instrument = "sounds/high_tom.mp3";
+				break;
 			case '*':
 				printf("Bye bye!\n");
 				break;
