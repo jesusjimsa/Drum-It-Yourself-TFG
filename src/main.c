@@ -4,26 +4,24 @@
  *********************************************************************
 *********************************************************************/
 
-/**
- * TODO: Threading
-*/
-
 #include <ao/ao.h>
 #include <mpg123.h>
 #include <pthread.h>
+#include <signal.h>
+#include <sys/types.h>
+#include <unistd.h>
 
 #define BITS 8
 
 #define true (1 == 1)
 #define false (!true)
 
-void *play(void *var){
+void play(char *sound){
 	mpg123_handle *mh;
 	unsigned char *buffer;
 	size_t buffer_size;
 	size_t done;
 	int err;
-	char *sound = (char *)var;
 
 	int driver;
 	ao_device *dev;
@@ -59,23 +57,17 @@ void *play(void *var){
 
 	/* clean up */
 	free(buffer);
-	// free(sound);
 	ao_close(dev);
 	mpg123_close(mh);
 	mpg123_delete(mh);
 	mpg123_exit();
 	ao_shutdown();
 
-	pthread_exit(NULL);			/* terminate the thread */
-	return NULL;
+	kill(getpid(),SIGINT);
 }
 
 int main(int argc, char *argv[]){
 	char option;
-	pthread_t tid[10];
-	int i = 0;
-	int allowed = true;
-	char *instrument = malloc(50);
 
 	/* 
 		When reading a character from the keyboard, the
@@ -85,62 +77,49 @@ int main(int argc, char *argv[]){
 	do{
 		scanf(" %c", &option);	// scanf needs an extra space at the beginning to consume the new line character
 
-		if(i == 10){
-			i = 0;
-		}
-
 		switch (option){
 			case 'a':
-				instrument = "sounds/bass_drum.mp3";
-				// play("sounds/bass_drum.mp3");
+				if(fork() == 0)
+					play("sounds/bass_drum.mp3");
 				break;
 			case 'b':
-				instrument = "sounds/closed_hi_hat.mp3";
-				// play("sounds/closed_hi_hat.mp3");
+				if(fork() == 0)
+					play("sounds/closed_hi_hat.mp3");
 				break;
 			case 'c':
-				instrument = "sounds/crash_cymbal.mp3";
-				// play("sounds/crash_cymbal.mp3");
+				if(fork() == 0)
+					play("sounds/crash_cymbal.mp3");
 				break;
 			case 'd':
-				instrument = "sounds/open_hi_hat.mp3";
-				// play("sounds/open_hi_hat.mp3");
+				if(fork() == 0)
+					play("sounds/open_hi_hat.mp3");
 				break;
 			case 'e':
-				instrument = "sounds/ryde_cymbal.mp3";
-				// play("sounds/ryde_cymbal.mp3");
+				if(fork() == 0)
+					play("sounds/ryde_cymbal.mp3");
 				break;
 			case 'f':
-				instrument = "sounds/snare_drum.mp3";
-				// play("sounds/snare_drum.mp3");
+				if(fork() == 0)
+					play("sounds/snare_drum.mp3");
 				break;
 			case 'g':
-				instrument = "sounds/floor_tom.mp3";
+				if(fork() == 0)
+					play("sounds/floor_tom.mp3");
 				break;
 			case 'h':
-				instrument = "sounds/mid_tom.mp3";
+				if(fork() == 0)
+					play("sounds/mid_tom.mp3");
 				break;
 			case 'i':
-				instrument = "sounds/high_tom.mp3";
+				if(fork() == 0)
+					play("sounds/high_tom.mp3");
 				break;
 			case '*':
 				printf("Bye bye!\n");
 				break;
 			default:
 				printf("Not allowed!\n");
-				allowed = false;
 				break;
 		}
-
-		if(option != '*' && allowed){
-			pthread_create(&tid[i], NULL, play, (void *)instrument);
-			i++;
-		}
-
-		allowed = true;
 	} while (option != '*');
-
-	free(instrument);
-	
-	pthread_exit(NULL);
 }
