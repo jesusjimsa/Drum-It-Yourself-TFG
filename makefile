@@ -9,10 +9,10 @@ DB = lldb
 SOUND_LIBS = -lao -lmpg123
 CONF_LIBS = -lpthread
 
-$(BIN)/main: $(SRC)/main.c
+$(BIN)/main:
 	@$(CC) $(SRC)/main.c -o $(BIN)/main $(SOUND_LIBS) $(CONF_LIBS)
 
-run:
+run: $(BIN)/main
 	@$(BIN)/main
 
 debug: $(BIN)/main
