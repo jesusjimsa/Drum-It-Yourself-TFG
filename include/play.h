@@ -1,8 +1,8 @@
-#ifndef FOO_H_
-#define FOO_H_
+#ifndef PLAY_H_
+#define PLAY_H_
 
 #define BITS 8
 
 void play(char *sound);
 
-#endif // FOO_H_
+#endif
