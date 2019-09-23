@@ -51,6 +51,4 @@ void play(char *sound){
 	mpg123_delete(mh);
 	mpg123_exit();
 	ao_shutdown();
-
-	kill(getpid(),SIGINT);
 }

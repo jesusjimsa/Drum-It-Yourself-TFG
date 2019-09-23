@@ -4,7 +4,7 @@
  *********************************************************************
 *********************************************************************/
 
-/* 
+/*
 TODO:
 	PTP
 */
@@ -19,60 +19,100 @@ TODO:
 #define true (1 == 1)
 #define false (!true)
 
-int main(int argc, char *argv[]){
-	char option;
+/* enum instrument{
+	bass_drum,
+	closed_hi_hat,
+	crash_cymbal,
+	open_hi_hat,
+	ryde_cymbal,
+	snare_drum,
+	floor_tom,
+	mid_tom,
+	high_tom,
+	bass_and_closed_hh,
+	bass_and_open_hh,
+	closed_hh_and_snare,
+	crash_and_snare
+}; */
 
-	/* 
+void ChooseSound(char selected[]) {
+	if (selected[0] == '\n' && selected[1] == '\0') {
+		printf("You have to write one or more letter to make sounds\n");
+	}
+	else if (selected[0] == 'a' && selected[1] == '\n') {
+		play("sounds/bass_drum.mp3");
+	}
+	else if (selected[0] == 'b' && selected[1] == '\n') {
+		play("sounds/closed_hi_hat.mp3");
+	}
+	else if (selected[0] == 'c' && selected[1] == '\n') {
+		play("sounds/crash_cymbal.mp3");
+	}
+	else if (selected[0] == 'd' && selected[1] == '\n') {
+		play("sounds/floor_tom.mp3");
+	}
+	else if (selected[0] == 'e' && selected[1] == '\n') {
+		play("sounds/high_tom.mp3");
+	}
+	else if (selected[0] == 'f' && selected[1] == '\n') {
+		play("sounds/mid_tom.mp3");
+	}
+	else if (selected[0] == 'g' && selected[1] == '\n') {
+		play("open_hi_hat.mp3");
+	}
+	else if (selected[0] == 'h' && selected[1] == '\n') {
+		play("sounds/ryde_cymbal.mp3");
+	}
+	else if (selected[0] == 'i' && selected[1] == '\n') {
+		play("sounds/snare_drum.mp3");
+	}
+	else if ((selected[0] == 'a' && selected[1] == 'b' && selected[2] == '\n')
+			|| (selected[0] == 'b' && selected[1] == 'a' && selected[2] == '\n')) {
+		play("sounds/combined/bass_and_closed_hh.mp3");
+	}
+	else if ((selected[0] == 'a' && selected[1] == 'g' && selected[2] == '\n')
+			|| (selected[0] == 'g' && selected[1] == 'a' && selected[2] == '\n')) {
+		play("sounds/combined/bass_and_open_hh.mp3");
+	}
+	else if ((selected[0] == 'a' && selected[1] == 'i' && selected[2] == '\n')
+			|| (selected[0] == 'i' && selected[1] == 'a' && selected[2] == '\n')) {
+		play("sounds/combined/bass_and_snare.mp3");
+	}
+	else if ((selected[0] == 'b' && selected[1] == 'i' && selected[2] == '\n')
+			|| (selected[0] == 'i' && selected[1] == 'b' && selected[2] == '\n')) {
+		play("sounds/combined/closed_hh_and_snare.mp3");
+	}
+	else if ((selected[0] == 'c' && selected[1] == 'i' && selected[2] == '\n')
+			|| (selected[0] == 'i' && selected[1] == 'c' && selected[2] == '\n')) {
+		play("sounds/combined/crash_and_snare.mp3");
+	}
+	else if (selected[0] == '*') {
+		return;
+	}
+
+	kill(getpid(),SIGINT);
+}
+
+int main(int argc, char *argv[]) {
+	/*
+		The maximun is 5 (4 + '\0') because one person
+		can only play 4 instruments at the same time
+		when playing drums
+	*/
+	char selected[5];
+	// enum instrument option;
+	// int i;
+
+	/*
 		When reading a character from the keyboard, the
 		program will play a different drums sound.
 		It will change to drums hits in the final product.
 	 */
 	do{
-		scanf(" %c", &option);	// scanf needs an extra space at the beginning to consume the new line character
-
-		switch (option){
-			case 'a':
-				if(fork() == 0)
-					play("sounds/bass_drum.mp3");
-				break;
-			case 'b':
-				if(fork() == 0)
-					play("sounds/closed_hi_hat.mp3");
-				break;
-			case 'c':
-				if(fork() == 0)
-					play("sounds/crash_cymbal.mp3");
-				break;
-			case 'd':
-				if(fork() == 0)
-					play("sounds/open_hi_hat.mp3");
-				break;
-			case 'e':
-				if(fork() == 0)
-					play("sounds/ryde_cymbal.mp3");
-				break;
-			case 'f':
-				if(fork() == 0)
-					play("sounds/snare_drum.mp3");
-				break;
-			case 'g':
-				if(fork() == 0)
-					play("sounds/floor_tom.mp3");
-				break;
-			case 'h':
-				if(fork() == 0)
-					play("sounds/mid_tom.mp3");
-				break;
-			case 'i':
-				if(fork() == 0)
-					play("sounds/high_tom.mp3");
-				break;
-			case '*':
-				printf("Bye bye!\n");
-				break;
-			default:
-				printf("Not allowed!\n");
-				break;
+		fgets(selected, sizeof(selected), stdin);
+		
+		if (fork() == 0) {
+			ChooseSound(selected);
 		}
-	} while (option != '*');
+	} while (selected[0] != '*');
 }
