@@ -58,7 +58,7 @@ void ChooseSound(char selected[]) {
 		play("sounds/mid_tom.mp3");
 	}
 	else if (selected[0] == 'g' && selected[1] == '\n') {
-		play("open_hi_hat.mp3");
+		play("sounds/open_hi_hat.mp3");
 	}
 	else if (selected[0] == 'h' && selected[1] == '\n') {
 		play("sounds/ryde_cymbal.mp3");
@@ -132,6 +132,9 @@ void ChooseSound(char selected[]) {
 	}
 	else if (selected[0] == '*') {
 		return;
+	}
+	else{
+		printf("Not valid character!\n");
 	}
 
 	kill(getpid(),SIGINT);
