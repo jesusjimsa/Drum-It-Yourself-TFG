@@ -86,6 +86,50 @@ void ChooseSound(char selected[]) {
 			|| (selected[0] == 'i' && selected[1] == 'c' && selected[2] == '\n')) {
 		play("sounds/combined/crash_and_snare.mp3");
 	}
+	else if ((selected[0] == 'a' && selected[1] == 'd' && selected[2] == '\n')
+			|| (selected[0] == 'd' && selected[1] == 'a' && selected[2] == '\n')) {
+		play("sounds/combined/bass_and_floor.mp3");
+	}
+	else if ((selected[0] == 'b' && selected[1] == 'e' && selected[2] == '\n')
+			|| (selected[0] == 'e' && selected[1] == 'b' && selected[2] == '\n')) {
+		play("sounds/combined/bass_and_high.mp3");
+	}
+	else if ((selected[0] == 'c' && selected[1] == 'h' && selected[2] == '\n')
+			|| (selected[0] == 'h' && selected[1] == 'c' && selected[2] == '\n')) {
+		play("sounds/combined/crash_and_ryde.mp3");
+	}
+	else if ((selected[0] == 'e' && selected[1] == 'd' && selected[2] == '\n')
+			|| (selected[0] == 'd' && selected[1] == 'e' && selected[2] == '\n')) {
+		play("sounds/combined/high_and_floor_tom.mp3");
+	}
+	else if ((selected[0] == 'e' && selected[1] == 'f' && selected[2] == '\n')
+			|| (selected[0] == 'f' && selected[1] == 'e' && selected[2] == '\n')) {
+		play("sounds/combined/high_and_mid_tom.mp3");
+	}
+	else if ((selected[0] == 'f' && selected[1] == 'd' && selected[2] == '\n')
+			|| (selected[0] == 'd' && selected[1] == 'f' && selected[2] == '\n')) {
+		play("sounds/combined/mid_and_floor_tom.mp3");
+	}
+	else if ((selected[0] == 'g' && selected[1] == 'i' && selected[2] == '\n')
+			|| (selected[0] == 'i' && selected[1] == 'g' && selected[2] == '\n')) {
+		play("sounds/combined/open_hh_and_snare.mp3");
+	}
+	else if ((selected[0] == 'i' && selected[1] == 'd' && selected[2] == '\n')
+			|| (selected[0] == 'd' && selected[1] == 'i' && selected[2] == '\n')) {
+		play("sounds/combined/snare_and_floor_tom.mp3");
+	}
+	else if ((selected[0] == 'i' && selected[1] == 'e' && selected[2] == '\n')
+			|| (selected[0] == 'e' && selected[1] == 'i' && selected[2] == '\n')) {
+		play("sounds/combined/snare_and_high_tom.mp3");
+	}
+	else if ((selected[0] == 'i' && selected[1] == 'f' && selected[2] == '\n')
+			|| (selected[0] == 'f' && selected[1] == 'i' && selected[2] == '\n')) {
+		play("sounds/combined/snare_and_mid_tom.mp3");
+	}
+	else if ((selected[0] == 'i' && selected[1] == 'h' && selected[2] == '\n')
+			|| (selected[0] == 'h' && selected[1] == 'i' && selected[2] == '\n')) {
+		play("sounds/combined/snare_and_ryde.mp3");
+	}
 	else if (selected[0] == '*') {
 		return;
 	}
@@ -100,8 +144,6 @@ int main(int argc, char *argv[]) {
 		when playing drums
 	*/
 	char selected[5];
-	// enum instrument option;
-	// int i;
 
 	/*
 		When reading a character from the keyboard, the
