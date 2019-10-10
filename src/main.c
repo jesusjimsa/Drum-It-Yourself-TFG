@@ -9,6 +9,7 @@
 #include <signal.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include <time.h>
 #include "../include/play.h"
 
 #define true (1 == 1)
@@ -116,6 +117,5 @@ int main(int argc, char *argv[]) {
 		if (fork() == 0) {
 			ChooseSound(selected);
 		}
-
 	} while (selected != 0);
 }
