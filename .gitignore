@@ -516,5 +516,6 @@ dmypy.json
 ##################################
 bin/
 main_antiguo.c
+test_buttons.c
 
 # End of https://www.gitignore.io/api/c,text,latex,linux,macos,python,visualstudiocode
