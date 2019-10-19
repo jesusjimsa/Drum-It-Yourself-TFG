@@ -12,6 +12,9 @@ CONF_LIBS = -lwiringPi
 $(BIN)/main:
 	@$(CC) $(SRC)/main.c $(SRC)/play.c -o $(BIN)/main $(SOUND_LIBS) $(CONF_LIBS)
 
+keys:
+	@$(CC) $(SRC)/keys.c $(SRC)/play.c -o $(BIN)/main $(SOUND_LIBS) $(CONF_LIBS)
+
 run: $(BIN)/main
 	@$(BIN)/main
 
