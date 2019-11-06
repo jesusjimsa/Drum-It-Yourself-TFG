@@ -21,6 +21,11 @@
 #define BUTTON_1 0
 #define BUTTON_2 2
 #define BUTTON_3 3
+#define BUTTON_4 21
+#define BUTTON_5 22
+#define BUTTON_6 23
+#define BUTTON_7 24
+#define BUTTON_8 25
 
 void ChooseSound(int selected){
 	switch (selected){
@@ -111,37 +116,66 @@ void ChooseSound(int selected){
 }
 
 void PlayAndDie(char *sound){
-	play(*sound);
-	delay(10);
+	play(sound);
 	kill(getpid(),SIGINT);
 }
 
 void PressToPlay(){
 	char *sound = (char *)malloc(sizeof(char) * 50);
+	int can_play = false;
+
+	delay(100);
 
 	if (digitalRead(BUTTON_1) == 1) {
 		sound = "sounds/bass_drum.mp3";
+		can_play = true;
 	} else if (digitalRead(BUTTON_2) == 1) {
-		sound = "sounds/snare_drum.mp3";
+		sound = "sounds/closed_hi_hat.mp3";
+		can_play = true;
 	} else if (digitalRead(BUTTON_3) == 1) {
+		sound = "sounds/crash_cymbal.mp3";
+		can_play = true;
+	} else if (digitalRead(BUTTON_4) == 0) {
+		sound = "sounds/floor_tom.mp3";
+		can_play = true;
+	} else if (digitalRead(BUTTON_5) == 0) {
+		sound = "sounds/high_tom.mp3";
+		can_play = true;
+	} else if (digitalRead(BUTTON_6) == 1) {
+		sound = "sounds/mid_tom.mp3";
+		can_play = true;
+	} else if (digitalRead(BUTTON_7) == 1) {
 		sound = "sounds/ryde_cymbal.mp3";
+		can_play = true;
+	} else if (digitalRead(BUTTON_8) == 1) {
+		sound = "sounds/snare_drum.mp3";
+		can_play = true;
 	}
 
-	if(fork() == 0){
-		PlayAndDie(*sound);
+	if(can_play){
+		if(fork() == 0){
+			PlayAndDie(sound);
+		}
 	}
 
 	//free(sound);
 }
 
-int main(int argc, char *argv[]) {
-	// int selected = 1;
-
+void SetupPi(){
 	wiringPiSetup();
 
 	pinMode(BUTTON_1, INPUT);
 	pinMode(BUTTON_2, INPUT);
 	pinMode(BUTTON_3, INPUT);
+	pinMode(BUTTON_4, INPUT);
+	pinMode(BUTTON_5, INPUT);
+	pinMode(BUTTON_6, INPUT);
+	pinMode(BUTTON_7, INPUT);
+	pinMode(BUTTON_8, INPUT);
+}
+
+int main(int argc, char *argv[]) {
+	SetupPi();
 
 	while (true){
 		PressToPlay();
