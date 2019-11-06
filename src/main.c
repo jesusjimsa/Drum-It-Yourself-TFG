@@ -11,6 +11,7 @@
 #include <unistd.h>
 #include <time.h>
 #include <stdio.h>
+#include <pthread.h>
 #include "../include/play.h"
 #include </home/pi/Documents/WiringPi/wiringPi/wiringPi.h>
 
@@ -27,133 +28,127 @@
 #define BUTTON_7 24
 #define BUTTON_8 25
 
-void ChooseSound(int selected){
-	switch (selected){
-		case 1:
-			play("sounds/bass_drum.mp3");
-			break;
-		case 2:
-			play("sounds/closed_hi_hat.mp3");
-			break;
-		case 3:
-			play("sounds/crash_cymbal.mp3");
-			break;
-		case 4:
-			play("sounds/floor_tom.mp3");
-			break;
-		case 5:
-			play("sounds/high_tom.mp3");
-			break;
-		case 6:
-			play("sounds/mid_tom.mp3");
-			break;
-		case 7:
-			play("sounds/open_hi_hat.mp3");
-			break;
-		case 8:
-			play("sounds/ryde_cymbal.mp3");
-			break;
-		case 9:
-			play("sounds/snare_drum.mp3");
-			break;
-		case 10:
-			play("sounds/combined/bass_and_closed_hh.mp3");
-			break;
-		case 11:
-			play("sounds/combined/bass_and_open_hh.mp3");
-			break;
-		case 12:
-			play("sounds/combined/bass_and_snare.mp3");
-			break;
-		case 13:
-			play("sounds/combined/closed_hh_and_snare.mp3");
-			break;
-		case 14:
-			play("sounds/combined/crash_and_snare.mp3");
-			break;
-		case 15:
-			play("sounds/combined/bass_and_floor.mp3");
-			break;
-		case 16:
-			play("sounds/combined/bass_and_high.mp3");
-			break;
-		case 17:
-			play("sounds/combined/crash_and_ryde.mp3");
-			break;
-		case 18:
-			play("sounds/combined/high_and_floor_tom.mp3");
-			break;
-		case 19:
-			play("sounds/combined/high_and_mid_tom.mp3");
-			break;
-		case 20:
-			play("sounds/combined/mid_and_floor_tom.mp3");
-			break;
-		case 21:
-			play("sounds/combined/open_hh_and_snare.mp3");
-			break;
-		case 22:
-			play("sounds/combined/snare_and_floor_tom.mp3");
-			break;
-		case 23:
-			play("sounds/combined/snare_and_high_tom.mp3");
-			break;
-		case 24:
-			play("sounds/combined/snare_and_mid_tom.mp3");
-			break;
-		case 25:
-			play("sounds/combined/snare_and_ryde.mp3");
-			break;
-		case 0:
-			printf("Bye bye!\n");
-			break;	
-		default:
-			printf("You have to write a number between 0 and 25 (0 to exit)\n");
-			break;
-	}
-
-	kill(getpid(),SIGINT);
-}
+const unsigned int NUM_BUTTONS = 8;
+int no_more_from[NUM_BUTTONS] = {false};
+pthread_t tid[NUM_BUTTONS];
 
 void PlayAndDie(char *sound){
 	play(sound);
 	kill(getpid(),SIGINT);
 }
 
+/* 
+	When a button is pressed, multiple signals to play a sound are sent.
+	no_more_from set to false stops that.
+	A thread for every button with this function waits until the button is
+	released to let it play a sound again.
+*/
+void *OneSound(void *from){
+	int origin = (int)from;
+	unsigned int button = 0;
+	int pressed = -1;
+
+	switch (origin) {
+		case 0:
+			button = BUTTON_1;
+			break;
+		case 1:
+			button = BUTTON_2;
+			break;
+		case 2:
+			button = BUTTON_3;
+			break;
+		case 3:
+			button = BUTTON_4;
+			break;
+		case 4:
+			button = BUTTON_5;
+			break;
+		case 5:
+			button = BUTTON_6;
+			break;
+		case 6:
+			button = BUTTON_7;
+			break;
+		case 7:
+			button = BUTTON_8;
+			break;
+	}
+
+	if (button == BUTTON_4 || button == BUTTON_5) {
+		pressed = 0
+	}
+	else{
+		pressed = 1
+	}
+
+	while (digitalRead(button) == pressed){
+		// Repeat until not pressed
+	} 
+
+	no_more_from[origin] = false;
+
+	return NULL;
+}
+
 void PressToPlay(){
 	char *sound = (char *)malloc(sizeof(char) * 50);
 	int can_play = false;
+	int from;
 
-	delay(100);
-
-	if (digitalRead(BUTTON_1) == 1) {
+	if (digitalRead(BUTTON_1) == 1 && !no_more_from[0]) {
 		sound = "sounds/bass_drum.mp3";
 		can_play = true;
-	} else if (digitalRead(BUTTON_2) == 1) {
+		no_more_from[0] = true;
+		from = 0;
+	}
+	else if (digitalRead(BUTTON_2) == 1 && !no_more_from[1]) {
 		sound = "sounds/closed_hi_hat.mp3";
 		can_play = true;
-	} else if (digitalRead(BUTTON_3) == 1) {
+		no_more_from[1] = true;
+		from = 1;
+	}
+	else if (digitalRead(BUTTON_3) == 1 && !no_more_from[2]) {
 		sound = "sounds/crash_cymbal.mp3";
 		can_play = true;
-	} else if (digitalRead(BUTTON_4) == 0) {
+		no_more_from[2] = true;
+		from = 2;
+	}
+	else if (digitalRead(BUTTON_4) == 0 && !no_more_from[3]) {
 		sound = "sounds/floor_tom.mp3";
 		can_play = true;
-	} else if (digitalRead(BUTTON_5) == 0) {
+		no_more_from[3] = true;
+		from = 3;
+	}
+	else if (digitalRead(BUTTON_5) == 0 && !no_more_from[4]) {
 		sound = "sounds/high_tom.mp3";
 		can_play = true;
-	} else if (digitalRead(BUTTON_6) == 1) {
+		no_more_from[4] = true;
+		from = 4;
+	}
+	else if (digitalRead(BUTTON_6) == 1 && !no_more_from[5]) {
 		sound = "sounds/mid_tom.mp3";
 		can_play = true;
-	} else if (digitalRead(BUTTON_7) == 1) {
+		no_more_from[5] = true;
+		from = 5;
+	}
+	else if (digitalRead(BUTTON_7) == 1 && !no_more_from[6]) {
 		sound = "sounds/ryde_cymbal.mp3";
 		can_play = true;
-	} else if (digitalRead(BUTTON_8) == 1) {
+		no_more_from[6] = true;
+		from = 6;
+	}
+	else if (digitalRead(BUTTON_8) == 1 && !no_more_from[7]) {
 		sound = "sounds/snare_drum.mp3";
 		can_play = true;
+		no_more_from[7] = true;
+		from = 7;
 	}
 
-	if(can_play){
-		if(fork() == 0){
+	if (can_play) {
+		pthread_create(&tid[from], NULL, OneSound, (void *)from);
+
+		if (fork() == 0) {
 			PlayAndDie(sound);
 		}
 	}
@@ -174,7 +169,7 @@ void SetupPi(){
 	pinMode(BUTTON_8, INPUT);
 }
 
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[]){
 	SetupPi();
 
 	while (true){
