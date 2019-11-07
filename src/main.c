@@ -28,7 +28,8 @@
 #define BUTTON_7 24
 #define BUTTON_8 25
 
-const unsigned int NUM_BUTTONS = 8;
+#define NUM_BUTTONS 8
+
 int no_more_from[NUM_BUTTONS] = {false};
 pthread_t tid[NUM_BUTTONS];
 
@@ -76,10 +77,10 @@ void *OneSound(void *from){
 	}
 
 	if (button == BUTTON_4 || button == BUTTON_5) {
-		pressed = 0
+		pressed = 0;
 	}
 	else{
-		pressed = 1
+		pressed = 1;
 	}
 
 	while (digitalRead(button) == pressed){
@@ -88,6 +89,7 @@ void *OneSound(void *from){
 
 	no_more_from[origin] = false;
 
+	pthread_exit(NULL);			/* terminate the thread */
 	return NULL;
 }
 
