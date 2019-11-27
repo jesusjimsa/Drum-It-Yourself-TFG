@@ -33,7 +33,7 @@
 int no_more_from[NUM_BUTTONS] = {false};
 pthread_t tid[NUM_BUTTONS];
 
-void PlayAndDie(char *sound){
+void PlayAndDie(char *sound) {
 	play(sound);
 	kill(getpid(),SIGINT);
 }
@@ -44,7 +44,7 @@ void PlayAndDie(char *sound){
 	A thread for every button with this function waits until the button is
 	released to let it play a sound again.
 */
-void *OneSound(void *from){
+void *OneSound(void *from) {
 	int origin = (int)from;
 	unsigned int button = 0;
 	int pressed = -1;
@@ -79,11 +79,11 @@ void *OneSound(void *from){
 	if (button == BUTTON_4 || button == BUTTON_5) {
 		pressed = 0;
 	}
-	else{
+	else {
 		pressed = 1;
 	}
 
-	while (digitalRead(button) == pressed){
+	while (digitalRead(button) == pressed) {
 		// Repeat until not pressed
 	} 
 
@@ -93,7 +93,7 @@ void *OneSound(void *from){
 	return NULL;
 }
 
-void PressToPlay(){
+void PressToPlay() {
 	char *sound = (char *)malloc(sizeof(char) * 50);
 	int can_play = false;
 	int from;
@@ -154,11 +154,9 @@ void PressToPlay(){
 			PlayAndDie(sound);
 		}
 	}
-
-	//free(sound);
 }
 
-void SetupPi(){
+void SetupPi() {
 	wiringPiSetup();
 
 	pinMode(BUTTON_1, INPUT);
@@ -171,10 +169,10 @@ void SetupPi(){
 	pinMode(BUTTON_8, INPUT);
 }
 
-int main(int argc, char *argv[]){
+int main(int argc, char *argv[]) {
 	SetupPi();
 
-	while (true){
+	while (true) {
 		PressToPlay();
 	}
 }

@@ -15,8 +15,8 @@
 #define true (1 == 1)
 #define false (!true)
 
-void ChooseSound(int selected){
-	switch (selected){
+void ChooseSound(int selected) {
+	switch (selected) {
 		case 1:
 			play("sounds/bass_drum.mp3");
 			break;
