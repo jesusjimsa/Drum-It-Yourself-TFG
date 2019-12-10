@@ -3,10 +3,11 @@
 
 #define BITS 8
 
-/* Instruments */
 /*
-const char * const
-immutable pointer to immutable char value
+	const char * const
+	immutable pointer to immutable char value
+	-----------------------------------------
+	Instruments
 */
 const char * const BASS_DRUM = "bass_drum.mp3";
 const char * const CLOSED_HI_HAT = "closed_hi_hat.mp3";
