@@ -20,6 +20,8 @@ void setup(void) {
 void loop(void) {
 	fsrReading = analogRead(fsrAnalogPin);
 
+	Serial.println("1:");
+	
 	if (!interval) {
 		if (fsrReading >= 200 && fsrReading < 400) {
 			interval = true;
