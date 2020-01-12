@@ -4,16 +4,16 @@
  *********************************************************************
 *********************************************************************/
 
-#include <ao/ao.h>
-#include <mpg123.h>
 #include <signal.h>
-#include <sys/types.h>
 #include <unistd.h>
 #include <time.h>
 #include <stdio.h>
 #include <pthread.h>
+#include <sys/types.h>
+#include <ao/ao.h>
+#include <mpg123.h>
 #include "../include/play.h"
-#include </home/pi/Documents/WiringPi/wiringPi/wiringPi.h>
+#include "/home/pi/Documents/WiringPi/wiringPi/wiringPi.h"
 
 #define true (1 == 1)
 #define false (!true)
@@ -35,10 +35,10 @@ pthread_t tid[NUM_BUTTONS];
 
 void PlayAndDie(char *sound) {
 	play(sound);
-	kill(getpid(),SIGINT);
+	kill(getpid(), SIGINT);
 }
 
-/* 
+/*
 	When a button is pressed, multiple signals to play a sound are sent.
 	no_more_from set to false stops that.
 	A thread for every button with this function waits until the button is
@@ -85,7 +85,7 @@ void *OneSound(void *from) {
 
 	while (digitalRead(button) == pressed) {
 		// Repeat until not pressed
-	} 
+	}
 
 	no_more_from[origin] = false;
 
