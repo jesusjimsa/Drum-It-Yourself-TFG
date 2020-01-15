@@ -9,10 +9,10 @@ DB = lldb
 SOUND_LIBS = -lao -lmpg123
 CONF_LIBS = -lpthread -lwiringPi
 
-$(BIN)/main:
+$(BIN)/main: $(SRC)/main.c $(SRC)/play.c $(INC)/play.h
 	@$(CC) $(SRC)/main.c $(SRC)/play.c -o $(BIN)/main $(SOUND_LIBS) $(CONF_LIBS)
 
-keys:
+keys: $(SRC)/main.c $(SRC)/play.c $(INC)/play.h
 	@$(CC) $(SRC)/keys.c $(SRC)/play.c -o $(BIN)/main $(SOUND_LIBS) $(CONF_LIBS)
 
 run: $(BIN)/main
