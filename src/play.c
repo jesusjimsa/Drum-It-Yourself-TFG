@@ -41,7 +41,7 @@ void play(char *sound){
 
 	/* decode and play */
 	while (mpg123_read(mh, buffer, buffer_size, &done) == MPG123_OK){
-		ao_play(dev, buffer, done);
+		ao_play(dev, (char*)buffer, done);
 	}
 
 	/* clean up */
