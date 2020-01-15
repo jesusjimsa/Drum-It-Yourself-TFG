@@ -11,6 +11,7 @@
 #include <fcntl.h>
 #include <termios.h>
 #include <errno.h>
+#include <signal.h>
 #include <ao/ao.h>
 #include <mpg123.h>
 #include <sys/types.h>
@@ -49,17 +50,23 @@ const char * const OPEN_HI_HAT = "open_hi_hat.mp3";
 const char * const RYDE_CYMBAL = "ryde_cymbal.mp3";
 const char * const SNARE_DRUM = "snare_drum.mp3";
 
+void intHandler(int dummy) {
+    printf("\nExiting...\n");
+	exit(EXIT_SUCCESS);
+}
+
 void PressToPlay(int instrument, int volume) {
 	char *sound = (char *)malloc(sizeof(char) * 50);
+	int can_play = true;
 
 	if (volume >= 200 && volume < 400) {
-		strcpy(sound, "sounds/volume/low");
+		sound = strdup("sounds/volume/low");
 	}
 	else if (volume >= 400 && volume < 800) {
-		strcpy(sound, "sounds/");
+		strdup("sounds/");
 	}
 	else if (volume >= 800) {
-		strcpy(sound, "sounds/volume/high");
+		strdup("sounds/volume/high");
 	}
 
 	switch (instrument) {
@@ -90,9 +97,12 @@ void PressToPlay(int instrument, int volume) {
 		case 9:
 			strcat(sound, CLOSED_HI_HAT);
 			break;
+		default:
+			can_play = false;
+			break;
 	}
 
-	if (fork() == 0) {
+	if (can_play && fork() == 0) {
 		play(sound);
 	}
 }
@@ -146,10 +156,15 @@ int readSerial() {
 		part = strtok(NULL, delim);
 		volume = atoi(part);
 
+		printf("Buffer --> '%s'\n", buf);
+		printf("Instrument: %d\n", instrument);
+		printf("Volume: %d\n", volume);
+
 		PressToPlay(instrument, volume);
 	}
 }
 
 int main(int argc, char *argv[]) {
+	signal(SIGINT, intHandler);
 	readSerial();
 }
