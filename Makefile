@@ -1,3 +1,6 @@
+# Copyright 2020 Jesús Jiménez Sánchez
+#
+
 OBJ = obj
 BIN = bin
 INC = include
