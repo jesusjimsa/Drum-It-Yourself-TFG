@@ -1,5 +1,6 @@
 /**
  * Copyright 2020 Jesús Jiménez Sánchez
+ *
  */
 
 #include <unistd.h>
@@ -17,38 +18,9 @@
 #include <sys/types.h>
 #include <sys/ioctl.h>
 #include "../include/play.h"
-#include "/home/pi/Documents/WiringPi/wiringPi/wiringPi.h"
 
 #define true (1 == 1)
 #define false (!true)
-
-/* Buttons in wiringPi */
-#define BUTTON_1 0
-#define BUTTON_2 2
-#define BUTTON_3 3
-#define BUTTON_4 21
-#define BUTTON_5 22
-#define BUTTON_6 23
-#define BUTTON_7 24
-#define BUTTON_8 25
-
-#define NUM_BUTTONS 8
-
-/*
-	const char * const
-	immutable pointer to immutable char value
-	-----------------------------------------
-	Instruments
-*/
-const char * const BASS_DRUM = "bass_drum.mp3";
-const char * const CLOSED_HI_HAT = "closed_hi_hat.mp3";
-const char * const CRASH_CYMBAL = "crash_cymbal.mp3";
-const char * const FLOOR_TOM = "floor_tom.mp3";
-const char * const HIGH_TOM = "high_tom.mp3";
-const char * const MID_TOM = "mid_tom.mp3";
-const char * const OPEN_HI_HAT = "open_hi_hat.mp3";
-const char * const RYDE_CYMBAL = "ryde_cymbal.mp3";
-const char * const SNARE_DRUM = "snare_drum.mp3";
 
 void intHandler(int dummy) {
     printf("\nExiting...\n");
@@ -59,61 +31,163 @@ void PressToPlay(int instrument, int volume) {
 	char *sound = (char *)malloc(sizeof(char) * 50);
 	int can_play = true;
 
-	if (volume >= 200 && volume < 400) {
-		sound = strdup("sounds/volume/low");
-	}
-	else if (volume >= 400 && volume < 800) {
-		strdup("sounds/");
-	}
-	else if (volume >= 800) {
-		strdup("sounds/volume/high");
-	}
-
 	switch (instrument) {
 		case 1:
-			strcat(sound, SNARE_DRUM);
+			if (volume >= 200 && volume < 400) {
+				sound = "sounds/volume/low/snare_drum.mp3";
+			}
+			else if (volume >= 400 && volume < 800) {
+				sound = "sounds/snare_drum.mp3";
+			}
+			else if (volume >= 800) {
+				sound = "sounds/volume/high/snare_drum.mp3";
+			}
+			else {
+				/*
+					In the case it returns a value less than 200,
+					nothing should be played
+				*/
+				return;
+			}
+
 			break;
 		case 2:
-			strcat(sound, BASS_DRUM);
+			if (volume >= 200 && volume < 400) {
+				sound = "sounds/volume/low/bass_drum.mp3";
+			}
+			else if (volume >= 400 && volume < 800) {
+				sound = "sounds/bass_drum.mp3";
+			}
+			else if (volume >= 800) {
+				sound = "sounds/volume/high/bass_drum.mp3";
+			}
+			else {
+				return;
+			}
+			
 			break;
 		case 3:
-			strcat(sound, CLOSED_HI_HAT);
+			if (volume >= 200 && volume < 400) {
+				sound = "sounds/volume/low/closed_hi_hat.mp3";
+			}
+			else if (volume >= 400 && volume < 800) {
+				sound = "sounds/closed_hi_hat.mp3";
+			}
+			else if (volume >= 800) {
+				sound = "sounds/volume/high/closed_hi_hat.mp3";
+			}
+			else {
+				return;
+			}
+
 			break;
 		case 4:
-			strcat(sound, CRASH_CYMBAL);
+			if (volume >= 200 && volume < 400) {
+				sound = "sounds/volume/low/crash_cymbal.mp3";
+			}
+			else if (volume >= 400 && volume < 800) {
+				sound = "sounds/crash_cymbal.mp3";
+			}
+			else if (volume >= 800) {
+				sound = "sounds/volume/high/crash_cymbal.mp3";
+			}
+			else {
+				return;
+			}
+
 			break;
 		case 5:
-			strcat(sound, RYDE_CYMBAL);
+			if (volume >= 200 && volume < 400) {
+				sound = "sounds/volume/low/ryde_cymbal.mp3";
+			}
+			else if (volume >= 400 && volume < 800) {
+				sound = "sounds/ryde_cymbal.mp3";
+			}
+			else if (volume >= 800) {
+				sound = "sounds/volume/high/ryde_cymbal.mp3";
+			}
+			else {
+				return;
+			}
+
 			break;
 		case 6:
-			strcat(sound, HIGH_TOM);
+			if (volume >= 200 && volume < 400) {
+				sound = "sounds/volume/low/high_tom.mp3";
+			}
+			else if (volume >= 400 && volume < 800) {
+				sound = "sounds/high_tom.mp3";
+			}
+			else if (volume >= 800) {
+				sound = "sounds/volume/high/high_tom.mp3";
+			}
+			else {
+				return;
+			}
+
 			break;
 		case 7:
-			strcat(sound, MID_TOM);
+			if (volume >= 200 && volume < 400) {
+				sound = "sounds/volume/low/mid_tom.mp3";
+			}
+			else if (volume >= 400 && volume < 800) {
+				sound = "sounds/mid_tom.mp3";
+			}
+			else if (volume >= 800) {
+				sound = "sounds/volume/high/mid_tom.mp3";
+			}
+			else {
+				return;
+			}
+
 			break;
 		case 8:
-			strcat(sound, FLOOR_TOM);
+			if (volume >= 200 && volume < 400) {
+				sound = "sounds/volume/low/floor_tom.mp3";
+			}
+			else if (volume >= 400 && volume < 800) {
+				sound = "sounds/floor_tom.mp3";
+			}
+			else if (volume >= 800) {
+				sound = "sounds/volume/high/floor_tom.mp3";
+			}
+			else {
+				return;
+			}
+
 			break;
 		case 9:
-			strcat(sound, CLOSED_HI_HAT);
+			if (volume >= 200 && volume < 400) {
+				sound = "sounds/volume/low/open_hi_hat.mp3";
+			}
+			else if (volume >= 400 && volume < 800) {
+				sound = "sounds/open_hi_hat.mp3";
+			}
+			else if (volume >= 800) {
+				sound = "sounds/volume/high/open_hi_hat.mp3";
+			}
+			else {
+				return;
+			}
+
 			break;
 		default:
 			can_play = false;
 			break;
 	}
 
-	if (can_play && fork() == 0) {
+	if (can_play) {
 		play(sound);
 	}
 }
 
-int readSerial() {
-	int fd, n;
-	char buf[64] = "temp text";
-	char delim[] = ":";
+void readSerial() {
+	struct termios toptions;
+	int fd, i;
+	char buf[20] = {'\0'};
+	const char delim[] = ":";
 	int instrument = 0;
 	int volume = 0;
-	struct termios toptions;
 
 	/* open serial port */
 	fd = open("/dev/ttyACM0", O_RDWR | O_NOCTTY);
@@ -145,10 +219,20 @@ int readSerial() {
 		write(fd, "0", 1);
 
 		/* Receive string from Arduino */
-		n = read(fd, buf, 64);
+		read(fd, buf, 20);
 
-		/* insert terminating zero in the string */
-		buf[n] = 0;
+		// buf = removeFirstChar(buf, 10);
+
+		for (i = 0; i < 20 || buf[i] == '\0'; i++) {
+			if (buf[i] == '\n') {
+				buf[i] = '\0';
+				break;
+			}
+		}
+
+		if (buf[0] == '\0'){
+			continue;
+		}
 
 		char *part = strtok(buf, delim);
 		instrument = atoi(part);
@@ -156,11 +240,12 @@ int readSerial() {
 		part = strtok(NULL, delim);
 		volume = atoi(part);
 
-		printf("Buffer --> '%s'\n", buf);
-		printf("Instrument: %d\n", instrument);
-		printf("Volume: %d\n", volume);
+		// printf("Instrument: %d\n", instrument);
+		// printf("Volume: %d\n", volume);
 
-		PressToPlay(instrument, volume);
+		if (instrument != 0 && volume != 0) {
+			PressToPlay(instrument, volume);
+		}
 	}
 }
 
