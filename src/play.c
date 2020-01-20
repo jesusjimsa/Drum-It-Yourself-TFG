@@ -1,3 +1,8 @@
+/**
+ * Copyright 2020 Jesús Jiménez Sánchez
+ * 
+ */
+
 #include <ao/ao.h>
 #include <mpg123.h>
 #include <signal.h>

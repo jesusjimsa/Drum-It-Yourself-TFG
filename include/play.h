@@ -1,3 +1,8 @@
+/**
+ * Copyright 2020 Jesús Jiménez Sánchez
+ * 
+ */
+
 #ifndef PLAY_H_
 #define PLAY_H_
 

@@ -518,6 +518,7 @@ bin/
 main_antiguo.c
 test_buttons.c
 read-serial.c
+sensor.c
 .vscode/
 
 # End of https://www.gitignore.io/api/c,text,latex,linux,macos,python,visualstudiocode
