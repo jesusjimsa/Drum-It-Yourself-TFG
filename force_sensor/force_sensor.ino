@@ -18,7 +18,7 @@ char buf[BUF_LEN];
 int len = 0;
 
 void setup(void) {
-	Serial.begin(9600);		// We'll send debugging information via the Serial monitor
+	Serial.begin(9600);
 }
 
 void loop(void) {
@@ -33,6 +33,9 @@ void loop(void) {
 		for(int i = 0; i <= len; i++) {
 			Serial.print(buf[i]);
 		}
+	}
+	else {
+		Serial.print("0:0\n");
 	}
 
 	if (fsrReading < 100) {
