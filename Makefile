@@ -10,7 +10,7 @@ CC = gcc -g -O3 -Wall
 DB = lldb
 
 SOUND_LIBS = -lao -lmpg123
-CONF_LIBS = -lpthread -lwiringPi
+CONF_LIBS = -lpthread #-lwiringPi
 
 $(BIN)/main: $(SRC)/main.c $(SRC)/play.c $(INC)/play.h
 	@$(CC) $(SRC)/main.c $(SRC)/play.c -o $(BIN)/main $(SOUND_LIBS) $(CONF_LIBS)
