@@ -176,7 +176,7 @@ void PressToPlay(int instrument, int volume) {
 			break;
 	}
 
-	if (can_play) {
+	if (can_play && fork() == 0) {
 		play(sound);
 	}
 }
@@ -223,15 +223,19 @@ void readSerial() {
 
 		// buf = removeFirstChar(buf, 10);
 
-		for (i = 0; i < 20 || buf[i] == '\0'; i++) {
+		if (buf[0] == '0' || buf[0] == '\0'){
+			continue;
+		}
+
+		for (i = 0; i < 20; i++) {
 			if (buf[i] == '\n') {
 				buf[i] = '\0';
 				break;
 			}
-		}
 
-		if (buf[0] == '\0'){
-			continue;
+			if (buf[i] == '\0'){
+				break;
+			}
 		}
 
 		char *part = strtok(buf, delim);
@@ -243,7 +247,7 @@ void readSerial() {
 		// printf("Instrument: %d\n", instrument);
 		// printf("Volume: %d\n", volume);
 
-		if (instrument != 0 && volume != 0) {
+		if (instrument != 0 && volume != 0 && fork() == 0) {
 			PressToPlay(instrument, volume);
 		}
 	}
