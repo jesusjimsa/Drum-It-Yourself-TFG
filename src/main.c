@@ -22,163 +22,92 @@
 #define true (1 == 1)
 #define false (!true)
 
+const char * const sounds_list[9][3] = {
+	{	
+		"sounds/volume/low/snare_drum.mp3",
+		"sounds/snare_drum.mp3",
+		"sounds/volume/high/snare_drum.mp3",
+	},
+	{	
+		"sounds/volume/low/bass_drum.mp3",
+		"sounds/bass_drum.mp3",
+		"sounds/volume/high/bass_drum.mp3",
+	},
+	{	
+		"sounds/volume/low/closed_hi_hat.mp3",
+		"sounds/closed_hi_hat.mp3",
+		"sounds/volume/high/closed_hi_hat.mp3",
+	},
+	{	
+		"sounds/volume/low/crash_cymbal.mp3",
+		"sounds/crash_cymbal.mp3",
+		"sounds/volume/high/crash_cymbal.mp3",
+	},
+	{	
+		"sounds/volume/low/ryde_cymbal.mp3",
+		"sounds/ryde_cymbal.mp3",
+		"sounds/volume/high/ryde_cymbal.mp3",
+	},
+	{	
+		"sounds/volume/low/high_tom.mp3",
+		"sounds/high_tom.mp3",
+		"sounds/volume/high/high_tom.mp3",
+	},
+	{	
+		"sounds/volume/low/mid_tom.mp3",
+		"sounds/mid_tom.mp3",
+		"sounds/volume/high/mid_tom.mp3",
+	},
+	{	
+		"sounds/volume/low/floor_tom.mp3",
+		"sounds/floor_tom.mp3",
+		"sounds/volume/high/floor_tom.mp3",
+	},
+	{	
+		"sounds/volume/low/open_hi_hat.mp3",
+		"sounds/open_hi_hat.mp3",
+		"sounds/volume/high/open_hi_hat.mp3",
+	}
+};
+
 void intHandler(int dummy) {
-    printf("\nExiting...\n");
 	exit(EXIT_SUCCESS);
 }
 
 void PressToPlay(int instrument, int volume) {
 	char *sound = (char *)malloc(sizeof(char) * 50);
 	int can_play = true;
-
-	switch (instrument) {
-		case 1:
-			if (volume >= 200 && volume < 400) {
-				sound = "sounds/volume/low/snare_drum.mp3";
-			}
-			else if (volume >= 400 && volume < 800) {
-				sound = "sounds/snare_drum.mp3";
-			}
-			else if (volume >= 800) {
-				sound = "sounds/volume/high/snare_drum.mp3";
-			}
-			else {
-				/*
-					In the case it returns a value less than 200,
-					nothing should be played
-				*/
-				return;
-			}
-
-			break;
-		case 2:
-			if (volume >= 200 && volume < 400) {
-				sound = "sounds/volume/low/bass_drum.mp3";
-			}
-			else if (volume >= 400 && volume < 800) {
-				sound = "sounds/bass_drum.mp3";
-			}
-			else if (volume >= 800) {
-				sound = "sounds/volume/high/bass_drum.mp3";
-			}
-			else {
-				return;
-			}
-			
-			break;
-		case 3:
-			if (volume >= 200 && volume < 400) {
-				sound = "sounds/volume/low/closed_hi_hat.mp3";
-			}
-			else if (volume >= 400 && volume < 800) {
-				sound = "sounds/closed_hi_hat.mp3";
-			}
-			else if (volume >= 800) {
-				sound = "sounds/volume/high/closed_hi_hat.mp3";
-			}
-			else {
-				return;
-			}
-
-			break;
-		case 4:
-			if (volume >= 200 && volume < 400) {
-				sound = "sounds/volume/low/crash_cymbal.mp3";
-			}
-			else if (volume >= 400 && volume < 800) {
-				sound = "sounds/crash_cymbal.mp3";
-			}
-			else if (volume >= 800) {
-				sound = "sounds/volume/high/crash_cymbal.mp3";
-			}
-			else {
-				return;
-			}
-
-			break;
-		case 5:
-			if (volume >= 200 && volume < 400) {
-				sound = "sounds/volume/low/ryde_cymbal.mp3";
-			}
-			else if (volume >= 400 && volume < 800) {
-				sound = "sounds/ryde_cymbal.mp3";
-			}
-			else if (volume >= 800) {
-				sound = "sounds/volume/high/ryde_cymbal.mp3";
-			}
-			else {
-				return;
-			}
-
-			break;
-		case 6:
-			if (volume >= 200 && volume < 400) {
-				sound = "sounds/volume/low/high_tom.mp3";
-			}
-			else if (volume >= 400 && volume < 800) {
-				sound = "sounds/high_tom.mp3";
-			}
-			else if (volume >= 800) {
-				sound = "sounds/volume/high/high_tom.mp3";
-			}
-			else {
-				return;
-			}
-
-			break;
-		case 7:
-			if (volume >= 200 && volume < 400) {
-				sound = "sounds/volume/low/mid_tom.mp3";
-			}
-			else if (volume >= 400 && volume < 800) {
-				sound = "sounds/mid_tom.mp3";
-			}
-			else if (volume >= 800) {
-				sound = "sounds/volume/high/mid_tom.mp3";
-			}
-			else {
-				return;
-			}
-
-			break;
-		case 8:
-			if (volume >= 200 && volume < 400) {
-				sound = "sounds/volume/low/floor_tom.mp3";
-			}
-			else if (volume >= 400 && volume < 800) {
-				sound = "sounds/floor_tom.mp3";
-			}
-			else if (volume >= 800) {
-				sound = "sounds/volume/high/floor_tom.mp3";
-			}
-			else {
-				return;
-			}
-
-			break;
-		case 9:
-			if (volume >= 200 && volume < 400) {
-				sound = "sounds/volume/low/open_hi_hat.mp3";
-			}
-			else if (volume >= 400 && volume < 800) {
-				sound = "sounds/open_hi_hat.mp3";
-			}
-			else if (volume >= 800) {
-				sound = "sounds/volume/high/open_hi_hat.mp3";
-			}
-			else {
-				return;
-			}
-
-			break;
-		default:
-			can_play = false;
-			break;
+	int chosen_volume = 0;
+	
+	if (volume >= 200 && volume < 400) {
+		chosen_volume = 0;
+	}
+	else if (volume >= 400 && volume < 800) {
+		chosen_volume = 1;
+	}
+	else if (volume >= 800) {
+		chosen_volume = 2;
+	}
+	else {
+		/*
+			In the case it returns a value less than 200,
+			nothing should be played
+		*/
+		kill(getpid(), SIGINT);	// Exit process
 	}
 
-	if (can_play && fork() == 0) {
+	if (instrument < 1 || instrument > 9) {
+		can_play = false;
+	}
+
+	// sound = sounds_list[instrument][chosen_volume];
+	sound = (char *)sounds_list[instrument - 1][chosen_volume];
+
+	if (can_play) {
 		play(sound);
 	}
+
+	kill(getpid(), SIGINT);	// Exit process
 }
 
 void readSerial() {
@@ -221,8 +150,6 @@ void readSerial() {
 		/* Receive string from Arduino */
 		read(fd, buf, 20);
 
-		// buf = removeFirstChar(buf, 10);
-
 		if (buf[0] == '0' || buf[0] == '\0'){
 			continue;
 		}
@@ -238,14 +165,12 @@ void readSerial() {
 			}
 		}
 
+		// Separate instrument and string in string
 		char *part = strtok(buf, delim);
 		instrument = atoi(part);
 
 		part = strtok(NULL, delim);
 		volume = atoi(part);
-
-		// printf("Instrument: %d\n", instrument);
-		// printf("Volume: %d\n", volume);
 
 		if (instrument != 0 && volume != 0 && fork() == 0) {
 			PressToPlay(instrument, volume);
