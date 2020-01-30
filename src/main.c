@@ -22,6 +22,54 @@
 #define true (1 == 1)
 #define false (!true)
 
+const char * const sounds_list[9][3] = {
+	{	
+		"sounds/volume/low/snare_drum.mp3",
+		"sounds/snare_drum.mp3",
+		"sounds/volume/high/snare_drum.mp3",
+	},
+	{	
+		"sounds/volume/low/bass_drum.mp3",
+		"sounds/bass_drum.mp3",
+		"sounds/volume/high/bass_drum.mp3",
+	},
+	{	
+		"sounds/volume/low/closed_hi_hat.mp3",
+		"sounds/closed_hi_hat.mp3",
+		"sounds/volume/high/closed_hi_hat.mp3",
+	},
+	{	
+		"sounds/volume/low/crash_cymbal.mp3",
+		"sounds/crash_cymbal.mp3",
+		"sounds/volume/high/crash_cymbal.mp3",
+	},
+	{	
+		"sounds/volume/low/ryde_cymbal.mp3",
+		"sounds/ryde_cymbal.mp3",
+		"sounds/volume/high/ryde_cymbal.mp3",
+	},
+	{	
+		"sounds/volume/low/high_tom.mp3",
+		"sounds/high_tom.mp3",
+		"sounds/volume/high/high_tom.mp3",
+	},
+	{	
+		"sounds/volume/low/mid_tom.mp3",
+		"sounds/mid_tom.mp3",
+		"sounds/volume/high/mid_tom.mp3",
+	},
+	{	
+		"sounds/volume/low/floor_tom.mp3",
+		"sounds/floor_tom.mp3",
+		"sounds/volume/high/floor_tom.mp3",
+	},
+	{	
+		"sounds/volume/low/open_hi_hat.mp3",
+		"sounds/open_hi_hat.mp3",
+		"sounds/volume/high/open_hi_hat.mp3",
+	}
+};
+
 void intHandler(int dummy) {
 	exit(EXIT_SUCCESS);
 }
@@ -29,16 +77,16 @@ void intHandler(int dummy) {
 void PressToPlay(int instrument, int volume) {
 	char *sound = (char *)malloc(sizeof(char) * 50);
 	int can_play = true;
-	int chosen_volume;
+	int chosen_volume = 0;
 	
 	if (volume >= 200 && volume < 400) {
 		chosen_volume = 0;
 	}
 	else if (volume >= 400 && volume < 800) {
-		chosen_volume = 1
+		chosen_volume = 1;
 	}
 	else if (volume >= 800) {
-		chosen_volume = 2
+		chosen_volume = 2;
 	}
 	else {
 		/*
@@ -52,7 +100,8 @@ void PressToPlay(int instrument, int volume) {
 		can_play = false;
 	}
 
-	sound = sounds_list[instrument][volume];
+	// sound = sounds_list[instrument][chosen_volume];
+	sound = (char *)sounds_list[instrument - 1][chosen_volume];
 
 	if (can_play) {
 		play(sound);
