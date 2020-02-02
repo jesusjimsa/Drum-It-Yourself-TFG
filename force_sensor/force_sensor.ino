@@ -7,19 +7,19 @@
 
 const int BUF_LEN = 10;
 
-const int snare_sensor = 0;		// Snare is connected to analog 0
-const int hi_hat_sensor = 1;		// FSR is connected to analog 0
-const int crash_sensor = 2;		// FSR is connected to analog 0
-const int high_tom_sensor = 3;		// FSR is connected to analog 0
-const int floor_tom_sensor = 4;		// FSR is connected to analog 0
-const int bass_sensor = 5;		// FSR is connected to analog 0
+const int snare_sensor = 0;		// Snare Drum is connected to analog 0
+const int hi_hat_sensor = 1;		// Hi-Hat is connected to analog 1
+const int crash_sensor = 2;		// Crash Cymbal is connected to analog 2
+const int high_tom_sensor = 3;		// High Tom is connected to analog 3
+const int floor_tom_sensor = 4;		// Floor Tom is connected to analog 4
+const int bass_sensor = 5;		// Bass Drum is connected to analog 5
 
 int snare_read;		// the analog reading from the FSR resistor divider
-int hi_hat_read;		// the analog reading from the FSR resistor divider
-int crash_read;		// the analog reading from the FSR resistor divider
-int high_tom_read;		// the analog reading from the FSR resistor divider
-int floor_tom_read;		// the analog reading from the FSR resistor divider
-int bass_sensor_read;		// the analog reading from the FSR resistor divider
+int hi_hat_read;
+int crash_read;
+int high_tom_read;
+int floor_tom_read;
+int bass_read;
 
 int interval[6] = {false};		// Don't read when value is small
 
@@ -36,7 +36,7 @@ void loop(void) {
 	crash_read = analogRead(crash_sensor);
 	high_tom_read = analogRead(high_tom_sensor);
 	floor_tom_read = analogRead(floor_tom_sensor);
-	bass_sensor_read = analogRead(bass_sensor);
+	bass_read = analogRead(bass_sensor);
 
 	if (!interval[snare_sensor] && snare_read >= 200) {
 		interval[snare_sensor] = true;
@@ -116,7 +116,7 @@ void loop(void) {
 		interval[floor_tom_sensor] = false;
 	}
 	
-	if (bass_sensor_read < 100) {
+	if (bass_read < 100) {
 		interval[bass_sensor] = false;
 	}
 
