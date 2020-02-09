@@ -7,12 +7,12 @@
 
 const int BUF_LEN = 10;
 
-const int snare_sensor = 0;		// Snare Drum is connected to analog 0
-const int hi_hat_sensor = 1;		// Hi-Hat is connected to analog 1
-const int crash_sensor = 2;		// Crash Cymbal is connected to analog 2
-const int high_tom_sensor = 3;		// High Tom is connected to analog 3
-const int floor_tom_sensor = 4;		// Floor Tom is connected to analog 4
-const int bass_sensor = 5;		// Bass Drum is connected to analog 5
+const int snare_sensor = A0;		// Snare Drum is connected to analog 0
+const int hi_hat_sensor = A1;		// Hi-Hat is connected to analog 1
+const int crash_sensor = A2;		// Crash Cymbal is connected to analog 2
+const int high_tom_sensor = A3;		// High Tom is connected to analog 3
+const int floor_tom_sensor = A4;		// Floor Tom is connected to analog 4
+const int bass_sensor = A5;		// Bass Drum is connected to analog 5
 
 int snare_read;		// the analog reading from the FSR resistor divider
 int hi_hat_read;
@@ -21,10 +21,59 @@ int high_tom_read;
 int floor_tom_read;
 int bass_read;
 
+int read[6] = {0};
+
+int choice;
+
 int interval[6] = {false};		// Don't read when value is small
 
 char buf[BUF_LEN];
 int len = 0;
+
+int myMax(int one, int other) {
+	return (one > other ? one : other);
+}
+
+/* 
+	Parameters: The six sensors' values.
+	Returns: Identifier of the sensor with the highest value.
+			 -1 if the read value is less than 200.
+*/
+int maxSix(int first, int second, int third, int fourth, int fifth, int sixth) {
+	int result = -1;
+	int max_value = 0;
+
+	max_value = myMax(first, second);
+	max_value = myMax(max_value, third);
+	max_value = myMax(max_value, fourth);
+	max_value = myMax(max_value, fifth);
+	max_value = myMax(max_value, sixth);
+
+	if (max_value == first) {
+		result = 0;
+	}
+	else if (max_value == second) {
+		result = 1;
+	}
+	else if (max_value == third) {
+		result = 2;
+	}
+	else if (max_value == fourth) {
+		result = 3;
+	}
+	else if (max_value == fifth) {
+		result = 4;
+	}
+	else if (max_value == sixth) {
+		result = 5;
+	}
+
+	if (max_value < 200) {
+		result = -1;
+	}
+
+	return result;
+}
 
 void setup(void) {
 	Serial.begin(9600);
@@ -38,55 +87,17 @@ void loop(void) {
 	floor_tom_read = analogRead(floor_tom_sensor);
 	bass_read = analogRead(bass_sensor);
 
-	if (!interval[snare_sensor] && snare_read >= 200) {
-		interval[snare_sensor] = true;
+	read[0] = snare_read;
+	read[1] = hi_hat_read;
+	read[2] = crash_read;
+	read[3] = high_tom_read;
+	read[4] = floor_tom_read;
+	read[5] = bass_read;
 
-		len = sprintf (buf, "%d:%d\n", snare_sensor + 1, snare_read);
+	choice = maxSix(snare_read, hi_hat_read, crash_sensor, high_tom_read, floor_tom_read, bass_read);
 
-		for(int i = 0; i <= len; i++) {
-			Serial.print(buf[i]);
-		}
-	}
-	else if (!interval[hi_hat_sensor] && hi_hat_sensor >= 200) {
-		interval[hi_hat_sensor] = true;
-
-		len = sprintf (buf, "%d:%d\n", hi_hat_sensor + 1, hi_hat_read);
-
-		for(int i = 0; i <= len; i++) {
-			Serial.print(buf[i]);
-		}
-	}
-	else if (!interval[crash_sensor] && crash_sensor >= 200) {
-		interval[crash_sensor] = true;
-
-		len = sprintf (buf, "%d:%d\n", crash_sensor + 1, crash_read);
-
-		for(int i = 0; i <= len; i++) {
-			Serial.print(buf[i]);
-		}
-	}
-	else if (!interval[high_tom_sensor] && high_tom_sensor >= 200) {
-		interval[high_tom_sensor] = true;
-
-		len = sprintf (buf, "%d:%d\n", high_tom_sensor + 1, high_tom_read);
-
-		for(int i = 0; i <= len; i++) {
-			Serial.print(buf[i]);
-		}
-	}
-	else if (!interval[floor_tom_sensor] && floor_tom_sensor >= 200) {
-		interval[floor_tom_sensor] = true;
-
-		len = sprintf (buf, "%d:%d\n", floor_tom_sensor + 1, floor_tom_read);
-
-		for(int i = 0; i <= len; i++) {
-			Serial.print(buf[i]);
-		}
-	}
-	else if (!interval[bass_sensor] && bass_sensor >= 200) {
-		interval[bass_sensor] = true;
-
-		len = sprintf (buf, "%d:%d\n", bass_sensor + 1, bass_read);
+	if (choice != -1) {
+		len = sprintf (buf, "%d:%d\n", choice + 1, read[choice]);
 
 		for(int i = 0; i <= len; i++) {
 			Serial.print(buf[i]);
@@ -94,30 +105,6 @@ void loop(void) {
 	}
 	else {
 		Serial.print("0:0\n");
-	}
-
-	if (snare_read < 100) {
-		interval[snare_sensor] = false;
-	}
-
-	if (hi_hat_read < 100) {
-		interval[hi_hat_sensor] = false;
-	}
-
-	if (crash_read < 100) {
-		interval[crash_sensor] = false;
-	}
-
-	if (high_tom_read < 100) {
-		interval[high_tom_sensor] = false;
-	}
-
-	if (floor_tom_read < 100) {
-		interval[floor_tom_sensor] = false;
-	}
-	
-	if (bass_read < 100) {
-		interval[bass_sensor] = false;
 	}
 
 	delay(50);
