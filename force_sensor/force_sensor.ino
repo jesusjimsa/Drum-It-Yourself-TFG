@@ -96,15 +96,41 @@ void loop(void) {
 
 	choice = maxSix(snare_read, hi_hat_read, crash_sensor, high_tom_read, floor_tom_read, bass_read);
 
-	if (choice != -1) {
+	if (choice != -1 && !interval[choice]) {
 		len = sprintf (buf, "%d:%d\n", choice + 1, read[choice]);
 
 		for(int i = 0; i <= len; i++) {
 			Serial.print(buf[i]);
 		}
+
+		interval[choice] = true;
 	}
 	else {
 		Serial.print("0:0\n");
+	}
+
+	if (snare_read < 100) {
+		interval[0] = false;
+	}
+
+	if (hi_hat_read < 100) {
+		interval[1] = false;
+	}
+
+	if (crash_read < 100) {
+		interval[2] = false;
+	}
+
+	if (high_tom_read < 100) {
+		interval[3] = false;
+	}
+
+	if (floor_tom_read < 100) {
+		interval[4] = false;
+	}
+	
+	if (bass_read < 100) {
+		interval[5] = false;
 	}
 
 	delay(50);
