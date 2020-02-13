@@ -94,7 +94,7 @@ void loop(void) {
 	read[4] = floor_tom_read;
 	read[5] = bass_read;
 
-	choice = maxSix(snare_read, hi_hat_read, crash_sensor, high_tom_read, floor_tom_read, bass_read);
+	choice = maxSix(snare_read, hi_hat_read, crash_read, high_tom_read, floor_tom_read, bass_read);
 
 	if (choice != -1 && !interval[choice]) {
 		len = sprintf (buf, "%d:%d\n", choice + 1, read[choice]);
