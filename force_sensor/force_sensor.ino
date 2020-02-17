@@ -23,7 +23,9 @@ int bass_read;
 
 int read[6] = {0};
 
-int choice;
+int choice;		// Main patch played
+int also_playing; // Secondary patch for combined sounds
+int combined_index;	// Index for combined sounds
 
 int interval[6] = {false};		// Don't read when value is small
 
@@ -34,20 +36,40 @@ int myMax(int one, int other) {
 	return (one > other ? one : other);
 }
 
-/* 
-	Parameters: The six sensors' values.
-	Returns: Identifier of the sensor with the highest value.
-			 -1 if the read value is less than 200.
+/**
+ * 
+ * Parameters: The six sensors' values and the value to ignore.
+ * Returns: Identifier of the sensor with the highest value.
+ * 			-1 if the read value is less than 200.
+ * 
 */
-int maxSix(int first, int second, int third, int fourth, int fifth, int sixth) {
+int maxSix(int first, int second, int third, int fourth, int fifth, int sixth, int ignore) {
 	int result = -1;
 	int max_value = 0;
 
-	max_value = myMax(first, second);
-	max_value = myMax(max_value, third);
-	max_value = myMax(max_value, fourth);
-	max_value = myMax(max_value, fifth);
-	max_value = myMax(max_value, sixth);
+	if (first != ignore) {
+		max_value = first;
+	}
+
+	if (second != ignore) {
+		max_value = myMax(max_value, second);
+	}
+	
+	if (third != ignore) {
+		max_value = myMax(max_value, third);
+	}
+		
+	if (fourth != ignore) {
+		max_value = myMax(max_value, fourth);
+	}
+
+	if (fifth != ignore) {
+		max_value = myMax(max_value, fifth);
+	}
+	
+	if (sixth != ignore) {
+		max_value = myMax(max_value, sixth);
+	}
 
 	if (max_value == first) {
 		result = 0;
@@ -75,6 +97,136 @@ int maxSix(int first, int second, int third, int fourth, int fifth, int sixth) {
 	return result;
 }
 
+/**
+ * 	Check indexes to create the combined index
+ */
+int combinedSound(int main, int secondary) {
+	int combined = -1;
+
+	if (secondary != -1) {
+		switch (main) {
+			case 0:
+				switch (secondary) {
+					case 1:
+						combined = 9;
+						break;
+					case 2:
+						combined = 10;
+						break;
+					case 3:
+						combined = 11;
+						break;
+					case 4:
+						combined = 12;
+						break;
+					case 5:
+						combined = 13;
+						break;
+				}
+				break;
+			case 1:
+				switch (secondary) {
+					case 0:
+						combined = 9;
+						break;
+					case 2:
+						combined = 14;
+						break;
+					case 3:
+						combined = 15;
+						break;
+					case 4:
+						combined = 16;
+						break;
+					case 5:
+						combined = 17;
+						break;
+				}
+				break;
+			case 2:
+				switch (secondary) {
+					case 0:
+						combined = 10;
+						break;
+					case 1:
+						combined = 14;
+						break;
+					case 3:
+						combined = 18;
+						break;
+					case 4:
+						combined = 19;
+						break;
+					case 5:
+						combined = 20;
+						break;
+				}
+				break;
+			case 3:
+				switch (secondary) {
+					case 0:
+						combined = 11;
+						break;
+					case 1:
+						combined = 15;
+						break;
+					case 2:
+						combined = 18;
+						break;
+					case 4:
+						combined = 21;
+						break;
+					case 5:
+						combined = 22;
+						break;
+				}
+				break;
+			case 4:
+				switch (secondary) {
+					case 0:
+						combined = 12;
+						break;
+					case 1:
+						combined = 16;
+						break;
+					case 2:
+						combined = 19;
+						break;
+					case 3:
+						combined = 21;
+						break;
+					case 5:
+						combined = 23;
+						break;
+				}
+				break;
+			case 5:
+				switch (secondary) {
+					case 0:
+						combined = 13;
+						break;
+					case 1:
+						combined = 17;
+						break;
+					case 2:
+						combined = 20;
+						break;
+					case 3:
+						combined = 22;
+						break;
+					case 4:
+						combined = 23;
+						break;
+				}
+				break;
+			default:
+				break;
+		}
+	}
+
+	return combined;
+}
+
 void setup(void) {
 	Serial.begin(9600);
 }
@@ -94,8 +246,28 @@ void loop(void) {
 	read[4] = floor_tom_read;
 	read[5] = bass_read;
 
-	choice = maxSix(snare_read, hi_hat_read, crash_read, high_tom_read, floor_tom_read, bass_read);
+	choice = maxSix(snare_read, hi_hat_read, crash_read, high_tom_read, floor_tom_read, bass_read, -1);
+	also_playing = maxSix(snare_read, hi_hat_read, crash_read, high_tom_read, floor_tom_read, bass_read, choice);
 
+	combined_index = combinedSound(choice, also_playing);
+
+	/* 
+		Boolean statements are evaluated from left to right, that way this will never try to access
+		interval in the -1 position.
+	 */
+	if (combined_index != -1 && !interval[choice] && !interval[also_playing]) {
+		/* 
+			The volume of the combined sound will be the one read from the main instrument.
+		 */
+		len = sprintf (buf, "%d:%d\n", combined_index + 1, read[choice]);
+
+		for(int i = 0; i <= len; i++) {
+			Serial.print(buf[i]);
+		}
+
+		interval[choice] = true;
+		interval[also_playing] = true;
+	}
 	if (choice != -1 && !interval[choice]) {
 		len = sprintf (buf, "%d:%d\n", choice + 1, read[choice]);
 
