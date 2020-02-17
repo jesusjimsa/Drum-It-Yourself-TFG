@@ -22,51 +22,126 @@
 #define true (1 == 1)
 #define false (!true)
 
-const char * const sounds_list[9][3] = {
-	{	
+const char * const sounds_list[24][3] = {
+	{
 		"sounds/volume/low/snare_drum.mp3",
 		"sounds/snare_drum.mp3",
 		"sounds/volume/high/snare_drum.mp3",
 	},
-	{	
-		"sounds/volume/low/bass_drum.mp3",
-		"sounds/bass_drum.mp3",
-		"sounds/volume/high/bass_drum.mp3",
-	},
-	{	
+	{
 		"sounds/volume/low/closed_hi_hat.mp3",
 		"sounds/closed_hi_hat.mp3",
 		"sounds/volume/high/closed_hi_hat.mp3",
 	},
-	{	
+	{
 		"sounds/volume/low/crash_cymbal.mp3",
 		"sounds/crash_cymbal.mp3",
 		"sounds/volume/high/crash_cymbal.mp3",
 	},
-	{	
-		"sounds/volume/low/ryde_cymbal.mp3",
-		"sounds/ryde_cymbal.mp3",
-		"sounds/volume/high/ryde_cymbal.mp3",
-	},
-	{	
+	{
 		"sounds/volume/low/high_tom.mp3",
 		"sounds/high_tom.mp3",
 		"sounds/volume/high/high_tom.mp3",
 	},
-	{	
-		"sounds/volume/low/mid_tom.mp3",
-		"sounds/mid_tom.mp3",
-		"sounds/volume/high/mid_tom.mp3",
-	},
-	{	
+	{
 		"sounds/volume/low/floor_tom.mp3",
 		"sounds/floor_tom.mp3",
 		"sounds/volume/high/floor_tom.mp3",
 	},
-	{	
+	{
+		"sounds/volume/low/bass_drum.mp3",
+		"sounds/bass_drum.mp3",
+		"sounds/volume/high/bass_drum.mp3",
+	},
+	{
+		"sounds/volume/low/ryde_cymbal.mp3",
+		"sounds/ryde_cymbal.mp3",
+		"sounds/volume/high/ryde_cymbal.mp3",
+	},
+	{
+		"sounds/volume/low/mid_tom.mp3",
+		"sounds/mid_tom.mp3",
+		"sounds/volume/high/mid_tom.mp3",
+	},
+	{
 		"sounds/volume/low/open_hi_hat.mp3",
 		"sounds/open_hi_hat.mp3",
 		"sounds/volume/high/open_hi_hat.mp3",
+	},
+	{
+		"",
+		"sounds/combined/closed_hh_and_snare.mp3",
+		""
+	},
+	{
+		"",
+		"sounds/combined/crash_and_snare.mp3",
+		""
+	},
+	{
+		"",
+		"sounds/combined/snare_and_high_tom.mp3",
+		""
+	},
+	{
+		"",
+		"sounds/combined/snare_and_floor_tom.mp3",
+		""
+	},
+	{
+		"",
+		"sounds/combined/bass_and_snare.mp3",
+		""
+	},
+	{
+		"",
+		"sounds/combined/HI_HAT_AND_CRASH",
+		""
+	},
+	{
+		"",
+		"sounds/combined/HI_HAT_AND_HIGH_TOM",
+		""
+	},
+	{
+		"",
+		"sounds/combined/HI_HAT_AND_FLOOR_TOM",
+		""
+	},
+	{
+		"",
+		"sounds/combined/HI_HAT_AND_BASS",
+		""
+	},
+	{
+		"",
+		"sounds/combined/CRASH_AND_HIGH_TOM",
+		""
+	},
+	{
+		"",
+		"sounds/combined/CRASH_AND_FLOOR_TOM",
+		""
+	},
+	{
+		"",
+		"sounds/combined/CRASH_AND_BASS",
+		""
+	},
+	{
+		"",
+		"sounds/combined/high_and_floor_tom.mp3",
+		""
+	},
+	{
+		"",
+		"sounds/combined/bass_and_high.mp3",
+		""
+	},
+	{
+		"",
+		"sounds/combined/bass_and_floor.mp3",
+		""
 	}
 };
 
@@ -78,7 +153,7 @@ void PressToPlay(int instrument, int volume) {
 	char *sound = (char *)malloc(sizeof(char) * 50);
 	int can_play = true;
 	int chosen_volume = 0;
-	
+
 	if (volume >= 200 && volume < 400) {
 		chosen_volume = 0;
 	}
@@ -96,7 +171,7 @@ void PressToPlay(int instrument, int volume) {
 		kill(getpid(), SIGINT);	// Exit process
 	}
 
-	if (instrument < 1 || instrument > 9) {
+	if (instrument < 1 || instrument > 25) {
 		can_play = false;
 	}
 
