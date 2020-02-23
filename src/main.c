@@ -69,79 +69,79 @@ const char * const sounds_list[24][3] = {
 		"sounds/volume/high/open_hi_hat.mp3",
 	},
 	{
-		"",
+		"sounds/volume/low/closed_hh_and_snare.mp3",
 		"sounds/combined/closed_hh_and_snare.mp3",
-		""
+		"sounds/volume/high/closed_hh_and_snare.mp3"
 	},
 	{
-		"",
+		"sounds/volume/low/crash_and_snare.mp3",
 		"sounds/combined/crash_and_snare.mp3",
-		""
+		"sounds/volume/high/crash_and_snare.mp3"
 	},
 	{
-		"",
+		"sounds/volume/low/snare_and_high_tom.mp3",
 		"sounds/combined/snare_and_high_tom.mp3",
-		""
+		"sounds/volume/high/snare_and_high_tom.mp3"
 	},
 	{
-		"",
+		"sounds/volume/low/snare_and_floor_tom.mp3",
 		"sounds/combined/snare_and_floor_tom.mp3",
-		""
+		"sounds/volume/high/snare_and_floor_tom.mp3"
 	},
 	{
-		"",
+		"sounds/volume/low/bass_and_snare.mp3",
 		"sounds/combined/bass_and_snare.mp3",
-		""
+		"sounds/volume/high/bass_and_snare.mp3"
 	},
 	{
-		"",
+		"sounds/volume/low/closed_hh_and_crash.mp3",
 		"sounds/combined/closed_hh_and_crash.mp3",
-		""
+		"sounds/volume/high/closed_hh_and_crash.mp3"
 	},
 	{
-		"",
+		"sounds/volume/low/closed_hh_and_high_tom.mp3",
 		"sounds/combined/closed_hh_and_high_tom.mp3",
-		""
+		"sounds/volume/high/closed_hh_and_high_tom.mp3"
 	},
 	{
-		"",
+		"sounds/volume/low/closed_hh_and_floor_tom.mp3",
 		"sounds/combined/closed_hh_and_floor_tom.mp3",
-		""
+		"sounds/volume/low/closed_hh_and_floor_tom.mp3"
 	},
 	{
-		"",
+		"sounds/volume/low/bass_and_closed_hh.mp3",
 		"sounds/combined/bass_and_closed_hh.mp3",
-		""
+		"sounds/volume/high/bass_and_closed_hh.mp3"
 	},
 	{
-		"",
+		"sounds/volume/low/crash_and_high_tom.mp3",
 		"sounds/combined/crash_and_high_tom.mp3",
-		""
+		"sounds/volume/high/crash_and_high_tom.mp3"
 	},
 	{
-		"",
+		"sounds/volume/low/crash_and_floor_tom.mp3",
 		"sounds/combined/crash_and_floor_tom.mp3",
-		""
+		"sounds/volume/high/crash_and_floor_tom.mp3"
 	},
 	{
-		"",
+		"sounds/volume/low/bass_and_crash.mp3",
 		"sounds/combined/bass_and_crash.mp3",
-		""
+		"sounds/volume/high/bass_and_crash.mp3"
 	},
 	{
-		"",
+		"sounds/volume/low/high_and_floor_tom.mp3",
 		"sounds/combined/high_and_floor_tom.mp3",
-		""
+		"sounds/volume/low/high_and_floor_tom.mp3"
 	},
 	{
-		"",
+		"sounds/volume/low/bass_and_high.mp3",
 		"sounds/combined/bass_and_high.mp3",
-		""
+		"sounds/volume/high/bass_and_high.mp3"
 	},
 	{
-		"",
+		"sounds/volume/low/bass_and_floor.mp3",
 		"sounds/combined/bass_and_floor.mp3",
-		""
+		"sounds/volume/high/bass_and_floor.mp3"
 	}
 };
 
