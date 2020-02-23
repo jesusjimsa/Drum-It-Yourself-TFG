@@ -1,6 +1,6 @@
 /**
  * Copyright 2020 Jesús Jiménez Sánchez
- * 
+ *
  * Arduino program to control the force sensor in  the drums
  */
 
@@ -23,7 +23,9 @@ int bass_read;
 
 int read[6] = {0};
 
-int choice;
+int choice;		// Main patch played
+int also_playing;   // Secondary patch for combined sounds
+int combined_index;     // Index for combined sounds
 
 int interval[6] = {false};		// Don't read when value is small
 
@@ -34,20 +36,40 @@ int myMax(int one, int other) {
 	return (one > other ? one : other);
 }
 
-/* 
-	Parameters: The six sensors' values.
-	Returns: Identifier of the sensor with the highest value.
-			 -1 if the read value is less than 200.
+/**
+ *
+ * Parameters: The six sensors' values and the value to ignore.
+ * Returns: Identifier of the sensor with the highest value.
+ * 			-1 if the read value is less than 200.
+ *
 */
-int maxSix(int first, int second, int third, int fourth, int fifth, int sixth) {
+int maxSix(int first, int second, int third, int fourth, int fifth, int sixth, int ignore) {
 	int result = -1;
 	int max_value = 0;
 
-	max_value = myMax(first, second);
-	max_value = myMax(max_value, third);
-	max_value = myMax(max_value, fourth);
-	max_value = myMax(max_value, fifth);
-	max_value = myMax(max_value, sixth);
+	if (ignore != 1) {
+		max_value = first;
+	}
+
+	if (ignore != 2) {
+		max_value = myMax(max_value, second);
+	}
+
+	if (ignore != 3) {
+		max_value = myMax(max_value, third);
+	}
+
+	if (ignore != 4) {
+		max_value = myMax(max_value, fourth);
+	}
+
+	if (ignore != 5) {
+		max_value = myMax(max_value, fifth);
+	}
+
+	if (ignore != 6) {
+		max_value = myMax(max_value, sixth);
+	}
 
 	if (max_value == first) {
 		result = 0;
@@ -75,11 +97,145 @@ int maxSix(int first, int second, int third, int fourth, int fifth, int sixth) {
 	return result;
 }
 
+/**
+ * 	Check indexes to create the combined index
+ */
+int combinedSound(int main, int secondary) {
+	int combined = -1;
+
+	if (secondary != -1) {
+		switch (main) {
+			case 0:
+				switch (secondary) {
+					case 1:
+						combined = 9;
+						break;
+					case 2:
+						combined = 10;
+						break;
+					case 3:
+						combined = 11;
+						break;
+					case 4:
+						combined = 12;
+						break;
+					case 5:
+						combined = 13;
+						break;
+				}
+				break;
+			case 1:
+				switch (secondary) {
+					case 0:
+						combined = 9;
+						break;
+					case 2:
+						combined = 14;
+						break;
+					case 3:
+						combined = 15;
+						break;
+					case 4:
+						combined = 16;
+						break;
+					case 5:
+						combined = 17;
+						break;
+				}
+				break;
+			case 2:
+				switch (secondary) {
+					case 0:
+						combined = 10;
+						break;
+					case 1:
+						combined = 14;
+						break;
+					case 3:
+						combined = 18;
+						break;
+					case 4:
+						combined = 19;
+						break;
+					case 5:
+						combined = 20;
+						break;
+				}
+				break;
+			case 3:
+				switch (secondary) {
+					case 0:
+						combined = 11;
+						break;
+					case 1:
+						combined = 15;
+						break;
+					case 2:
+						combined = 18;
+						break;
+					case 4:
+						combined = 21;
+						break;
+					case 5:
+						combined = 22;
+						break;
+				}
+				break;
+			case 4:
+				switch (secondary) {
+					case 0:
+						combined = 12;
+						break;
+					case 1:
+						combined = 16;
+						break;
+					case 2:
+						combined = 19;
+						break;
+					case 3:
+						combined = 21;
+						break;
+					case 5:
+						combined = 23;
+						break;
+				}
+				break;
+			case 5:
+				switch (secondary) {
+					case 0:
+						combined = 13;
+						break;
+					case 1:
+						combined = 17;
+						break;
+					case 2:
+						combined = 20;
+						break;
+					case 3:
+						combined = 22;
+						break;
+					case 4:
+						combined = 23;
+						break;
+				}
+				break;
+			default:
+				break;
+		}
+	}
+
+	return combined;
+}
+
 void setup(void) {
 	Serial.begin(9600);
 }
 
 void loop(void) {
+	choice = -1;
+	also_playing = -1;
+	combined_index = -1;
+
 	snare_read = analogRead(snare_sensor);
 	hi_hat_read = analogRead(hi_hat_sensor);
 	crash_read = analogRead(crash_sensor);
@@ -94,12 +250,35 @@ void loop(void) {
 	read[4] = floor_tom_read;
 	read[5] = bass_read;
 
-	choice = maxSix(snare_read, hi_hat_read, crash_read, high_tom_read, floor_tom_read, bass_read);
+	choice = maxSix(snare_read, hi_hat_read, crash_read, high_tom_read, floor_tom_read, bass_read, -1);
 
-	if (choice != -1 && !interval[choice]) {
-		len = sprintf (buf, "%d:%d\n", choice + 1, read[choice]);
+	// Don't read a second sensor if the first one doesn't return a valid value
+	if (choice != -1) {
+		also_playing = maxSix(snare_read, hi_hat_read, crash_read, high_tom_read, floor_tom_read, bass_read, choice);
+		combined_index = combinedSound(choice, also_playing);
+	}
 
-		for(int i = 0; i <= len; i++) {
+	/**
+	 * Boolean statements are evaluated from left to right, that way this will never try to access
+	 * interval in the -1 position.
+	*/
+	if (combined_index != -1 && !interval[choice] && !interval[also_playing]) {
+		/**
+		 * The volume of the combined sound will be the one read from the main instrument.
+		*/
+		len = sprintf(buf, "%d:%d\n", combined_index + 1, read[choice]);
+
+		for (int i = 0; i <= len; i++) {
+			Serial.print(buf[i]);
+		}
+
+		interval[choice] = true;
+		interval[also_playing] = true;
+	}
+	else if (choice != -1 && !interval[choice]) {
+		len = sprintf(buf, "%d:%d\n", choice + 1, read[choice]);
+
+		for (int i = 0; i <= len; i++) {
 			Serial.print(buf[i]);
 		}
 
@@ -128,7 +307,7 @@ void loop(void) {
 	if (floor_tom_read < 100) {
 		interval[4] = false;
 	}
-	
+
 	if (bass_read < 100) {
 		interval[5] = false;
 	}
