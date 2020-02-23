@@ -95,37 +95,37 @@ const char * const sounds_list[24][3] = {
 	},
 	{
 		"",
-		"sounds/combined/HI_HAT_AND_CRASH",
+		"sounds/combined/closed_hh_and_crash.mp3",
 		""
 	},
 	{
 		"",
-		"sounds/combined/HI_HAT_AND_HIGH_TOM",
+		"sounds/combined/closed_hh_and_high_tom.mp3",
 		""
 	},
 	{
 		"",
-		"sounds/combined/HI_HAT_AND_FLOOR_TOM",
+		"sounds/combined/closed_hh_and_floor_tom.mp3",
 		""
 	},
 	{
 		"",
-		"sounds/combined/HI_HAT_AND_BASS",
+		"sounds/combined/bass_and_closed_hh.mp3",
 		""
 	},
 	{
 		"",
-		"sounds/combined/CRASH_AND_HIGH_TOM",
+		"sounds/combined/crash_and_high_tom.mp3",
 		""
 	},
 	{
 		"",
-		"sounds/combined/CRASH_AND_FLOOR_TOM",
+		"sounds/combined/crash_and_floor_tom.mp3",
 		""
 	},
 	{
 		"",
-		"sounds/combined/CRASH_AND_BASS",
+		"sounds/combined/bass_and_crash.mp3",
 		""
 	},
 	{
