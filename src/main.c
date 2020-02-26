@@ -214,14 +214,14 @@ void readSerial() {
 
 	/* Canonical mode */
 	toptions.c_lflag |= ICANON;
+	
+	/* commit the serial port settings */
+	tcsetattr(fd, TCSANOW, &toptions);
+
+	/* Send byte to trigger Arduino to send string back */
+	write(fd, "0", 1);
 
 	while (true) {
-		/* commit the serial port settings */
-		tcsetattr(fd, TCSANOW, &toptions);
-
-		/* Send byte to trigger Arduino to send string back */
-		write(fd, "0", 1);
-
 		/* Receive string from Arduino */
 		read(fd, buf, 20);
 
