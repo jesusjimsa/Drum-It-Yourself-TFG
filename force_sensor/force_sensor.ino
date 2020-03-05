@@ -47,34 +47,39 @@ void loop(void) {
 	read[4] = floor_tom_read;
 	read[5] = bass_read;
 
-	for (int i = 0; i < 6; i++) {
-		if (!interval[i] && read[i] > 200) {
-			len = sprintf(buf, "%d:%d", i + 1, read[i]);
-
-			for (int j = 0; j <= len; j++) {
-				Serial.print(buf[j]);
-			}
-
-			interval[i] = true;
-		}
-		else {
-			len = sprintf(buf, "%d:0", i + 1);
-
-			for (int j = 0; j <= len; j++) {
-				Serial.print(buf[j]);
-			}
-		}
-
-		/*
-			Print ':' to separate from the next instrument.
-			Not needed in the last one.
-		 */
-		if (i != 5) {
-			Serial.print(":");
-		}
+	if (read[0] < 200 && read[1] < 200 && read[2] < 200 && read[3] < 200 && read[4] < 200 && read[5] < 200) {
+		Serial.print("0:0\n");
 	}
+	else {
+		for (int i = 0; i < 6; i++) {
+			if (!interval[i] && read[i] > 200) {
+				len = sprintf(buf, "%d:%d", i + 1, read[i]);
 
-	Serial.print("\n");
+				for (int j = 0; j <= len; j++) {
+					Serial.print(buf[j]);
+				}
+
+				interval[i] = true;
+			}
+			else {
+				len = sprintf(buf, "%d:0", i + 1);
+
+				for (int j = 0; j <= len; j++) {
+					Serial.print(buf[j]);
+				}
+			}
+
+			/*
+				Print ':' to separate from the next instrument.
+				Not needed in the last one.
+			*/
+			if (i != 5) {
+				Serial.print(":");
+			}
+		}
+
+		Serial.print("\n");
+	}
 
 	if (snare_read < 100) {
 		interval[0] = false;
