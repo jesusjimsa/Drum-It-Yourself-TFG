@@ -8,6 +8,11 @@
 
 #define BITS 8
 
+struct read_intrument {
+	int id;
+	int volume;
+};
+
 /**
  * @brief Play mp3 sound
  * 
