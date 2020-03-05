@@ -128,11 +128,6 @@ const char * const sounds_list[24][3] = {
 	}
 };
 
-struct read_intrument {
-	int id;
-	int volume;
-};
-
 void play(char *sound){
 	mpg123_handle *mh;
 	unsigned char *buffer;
