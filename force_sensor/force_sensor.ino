@@ -53,11 +53,10 @@ void loop(void) {
 	else {
 		for (int i = 0; i < 6; i++) {
 			if (!interval[i] && read[i] > 200) {
-				len = sprintf(buf, "%d:%d", i + 1, read[i]);
 
-				for (int j = 0; j <= len; j++) {
-					Serial.print(buf[j]);
-				}
+				Serial.print(i + 1);
+				Serial.print(":");
+				Serial.print(read[i]);
 
 				interval[i] = true;
 			}
