@@ -6,8 +6,8 @@
 #include "../include/shared.h"
 
 void parseInstruments(char *buf) {
-	const char delim[] = ":";
 	struct read_intrument r_snare, r_hi_hat, r_crash, r_high_tom, r_floor_tom, r_bass;
+	const char delim[] = ":";
 
 	// Separate instrument and string in string
 	char *token = strtok(buf, delim);
@@ -73,8 +73,8 @@ void parseInstruments(char *buf) {
 
 void readSerial() {
 	struct termios toptions;
-	int fd, i;
-	char buf[40] = {'\0'};
+	int fd, i, j;
+	char buf[60] = {'\0'};
 
 	/* open serial port */
 	fd = open("/dev/ttyACM0", O_RDWR | O_NOCTTY);
@@ -106,20 +106,26 @@ void readSerial() {
 
 	while (true) {
 		/* Receive string from Arduino */
-		read(fd, buf, 20);
+		read(fd, buf, 60);
 
 		if (buf[0] == '0' || buf[0] == '\0'){
 			continue;
 		}
 
-		for (i = 0; i < 20; i++) {
+		for (i = 0; i < 60; i++) {
 			if (buf[i] == '\n') {
 				buf[i] = '\0';
 				break;
 			}
 
-			if (buf[i] == '\0'){
-				break;
+			if (buf[i] == '\000'){
+				for (j = i; j < 60; j++) {
+					if (buf[j] == '\n') {
+						break;
+					}
+
+					buf[j] = buf[j + 1];
+				}
 			}
 		}
 

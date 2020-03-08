@@ -25,9 +25,8 @@ void play(char *sound);
  * @brief Choose sound to play
  * 
  * @param instrument Instrument to play
- * @param volume Volume the instrument will be played
  * 
  */
-void PressToPlay(int instrument, int volume);
+void PressToPlay(struct read_intrument r_instrument);
 
 #endif
