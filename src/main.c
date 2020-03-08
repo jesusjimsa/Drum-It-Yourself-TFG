@@ -10,6 +10,9 @@ void intHandler(int dummy) {
 }
 
 int main(int argc, char *argv[]) {
+	printf("Playing...\n");
+	printf("Press Ctrl+C to close\n");
+
 	signal(SIGINT, intHandler);
 	readSerial();
 
