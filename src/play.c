@@ -176,11 +176,10 @@ void play(char *sound){
 	ao_shutdown();
 }
 
-void PressToPlay(void *instrument) {
+void PressToPlay(struct read_intrument r_instrument) {
 	char *sound = (char *)malloc(sizeof(char) * 50);
 	int can_play = true;
 	int chosen_volume = 0;
-	struct read_intrument r_instrument = (struct read_intrument) instrument;
 
 	if (r_instrument.volume >= 200 && r_instrument.volume < 400) {
 		chosen_volume = 0;
