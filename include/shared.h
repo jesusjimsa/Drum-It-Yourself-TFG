@@ -1,6 +1,6 @@
 /**
  * Copyright 2020 Jesús Jiménez Sánchez
- * 
+ *
  */
 
 #ifndef SHARED_H_

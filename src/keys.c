@@ -1,6 +1,6 @@
 /**
  * Copyright 2020 Jesús Jiménez Sánchez
- * 
+ *
  */
 
 #include <ao/ao.h>
@@ -93,7 +93,7 @@ void ChooseSound(int selected) {
 			break;
 		case 0:
 			printf("Bye bye!\n");
-			break;	
+			break;
 		default:
 			printf("You have to write a number between 0 and 25 (0 to exit)\n");
 			break;
@@ -112,7 +112,7 @@ int main(int argc, char *argv[]) {
 	 */
 	do{
 		scanf("%d", &selected);
-		
+
 		if (fork() == 0) {
 			ChooseSound(selected);
 		}

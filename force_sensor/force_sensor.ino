@@ -1,7 +1,7 @@
 /**
  * Copyright 2020 Jesús Jiménez Sánchez
  *
- * Arduino program to control the force sensor in  the drums
+ * Arduino program to control the force sensor in the drums
  */
 
 
